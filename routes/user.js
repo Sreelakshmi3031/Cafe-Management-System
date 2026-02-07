@@ -107,4 +107,19 @@ router.get("/getAllUsers", async (req, res) => {
   }
 });
 
+router.patch("/updateStatus", async (req, res) => {
+  try {
+    const user = req.body;
+    const [results] = await connection
+      .promise()
+      .query("update user set status=? where id=?", [user.status, user.id]);
+    if (results.affectedRows == 0) {
+      return res.status(404).json({ message: "User id does not exist" });
+    }
+    return res.status(200).json({ message: "User Updated Successfully" });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
 module.exports = router;
