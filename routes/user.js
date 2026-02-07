@@ -94,4 +94,17 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/getAllUsers", async (req, res) => {
+  try {
+    const [results] = await connection
+      .promise()
+      .query(
+        "select id,email,contactNumber,status from user where role='user'",
+      );
+    return res.status(200).json(results);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
 module.exports = router;
